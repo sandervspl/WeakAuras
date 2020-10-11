@@ -22,5 +22,5 @@ aura_env.SendWhisper = function(str, recipient)
 end
 
  aura_env.SendInviteError = function(recipient)
-    aura_env.SendWhisper("Error: Please add your server name (fire, gehe, mogr, luci, gole) to your whisper. Example: 'inv fire'", recipient)
+    aura_env.SendWhisper("Please add your server name (fire, gehe, mogr, luci, gole) to your whisper. Example: 'inv fire'", recipient)
 end

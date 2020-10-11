@@ -4,6 +4,16 @@ function(event, msg, sender)
     if event == "CHAT_MSG_WHISPER" then
         local characterName = sender:match("(.+)-")
 
+        -- Status update whisper
+        if string.sub(string.lower(msg), 0, 6) == "status" then
+            local serverName = string.sub(string.lower(msg), 8)
+            local count = aura_env.boosts[serverName]
+
+            aura_env.SendWhisper("Total for " .. serverName .. " = " .. count, sender)
+
+            return true
+        end
+
         -- Invalid whisper
         if string.sub(string.lower(msg), 0, 4) ~= "inv " then
             aura_env.SendInviteError(sender)
