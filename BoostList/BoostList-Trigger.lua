@@ -47,34 +47,17 @@ function(event, msg, sender)
     end
 
     -- Prevent duplicate characters
-    -- local exists = false
-    -- for k, character in pairs(characters) do
-    --     if characterName == character then
-    --         SendWhisper("Error: This character name has already been used!")
-    --         exists = true
-    --     end
-    -- end
+    local exists = false
+    for k, character in pairs(characters) do
+        if characterName == character then
+            exists = true
+        end
+    end
 
-    -- if exists then return false end
+    if exists then return false end
 
     -- Add character to list
-    -- table.insert(aura_env.characters, characterName)
-
-    -- Look for key of player
-    -- local key = ''
-    
-    -- for k, player in pairs(aura_env.players) do
-    --     if player[aura_env.constants.NAME] == name then
-    --         key = k
-    --     end
-    -- end
-
-    -- Increase char count of player by one, or add player to list
-    -- if key > 0 then
-    --     aura_env.players[key][aura_env.constants.AMOUNT] = aura_env.players[key][aura_env.constants.AMOUNT] + 1
-    -- else
-    --     table.insert(aura_env.players, {name, 1})
-    -- end
+    table.insert(aura_env.characters, characterName)
 
     -- Add one to server amount
     aura_env.players[serverName] = aura_env.players[serverName] + 1

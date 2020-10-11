@@ -11,5 +11,5 @@ aura_env.players = {
     luci = 0,
     gole = 0,
 }
--- aura_env.characters = {}
+aura_env.characters = {}
 aura_env.total = 0
