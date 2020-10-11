@@ -8,7 +8,7 @@ function(event, msg, sender)
         if string.sub(string.lower(msg), 0, 4) ~= "inv " then
             aura_env.SendInviteError(sender)
             
-            return false
+            return true
         end
 
         -- Format name
@@ -21,7 +21,7 @@ function(event, msg, sender)
         if string.len(serverName) == 0 then
             aura_env.SendInviteError(sender)
 
-            return false
+            return true
         end
 
         -- Invalid whisper, wrong server name
@@ -35,7 +35,13 @@ function(event, msg, sender)
         if wrongServerName then
             aura_env.SendInviteError(sender)
 
-            return false
+            return true
+        end
+
+        if GetNumGroupMembers() >= 40 then
+            aura_env.SendWhisper("Group is currently full, please try again in a minute.", sender)
+
+            return true
         end
 
         -- Add character and server to list
