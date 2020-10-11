@@ -1,4 +1,4 @@
--- CHAT_MSG_WHISPER,CHAT_MSG_SYSTEM,RAID_ROSTER_CHANGED
+-- CHAT_MSG_WHISPER,CHAT_MSG_SYSTEM,COMBAT_LOG_EVENT_UNFILTERED
 
 function(event, msg, sender)
     if event == "CHAT_MSG_WHISPER" then
@@ -47,14 +47,20 @@ function(event, msg, sender)
         return true
     
     elseif event == "CHAT_MSG_SYSTEM" then
-        local pattern = gsub(ERR_JOINED_GROUP_S, "%%s", "(.+)")
-        local characterName = strmatch(msg, pattern)
+        local stringConstant = ERR_JOINED_GROUP_S
 
-        if aura_env.charactersCounted[characterName] ~= nil then
-            return true
+        if UnitInRaid("player") then
+            stringConstant = ERR_RAID_MEMBER_ADDED_S
         end
 
+        local pattern = gsub(stringConstant, "%%s", "(.+)")
+        local characterName = strmatch(msg, pattern)
+
         if characterName then
+            if aura_env.charactersCounted[characterName] ~= nil then
+                return true
+            end
+
             -- Add one to server amount
             local serverName = aura_env.characters[characterName]
             aura_env.boosts[serverName] = aura_env.boosts[serverName] + 1
@@ -65,29 +71,38 @@ function(event, msg, sender)
             -- Save counted status of this character
             aura_env.charactersCounted[characterName] = true
 
-            -- Sort list by characters amount
-            -- function sortByAmountAndName(a, b)
-            --     if (a[aura_env.constants.AMOUNT] == b[aura_env.constants.AMOUNT]) then
-            --         return a[aura_env.constants.NAME] < b[aura_env.constants.NAME]
-            --     else
-            --         return a[aura_env.constants.AMOUNT] > b[aura_env.constants.AMOUNT]
-            --     end
-            -- end
-
-            -- table.sort(aura_env.boosts, sortByAmountAndName)
-
             return true
        end
+    
+    elseif event == "COMBAT_LOG_EVENT_UNFILTERED" then
+        local subevent = sender
 
-    elseif event == "RAID_ROSTER_CHANGED" then
-        for i=1,40 do
-            local member = "party"..i
+        if subevent == "UNIT_DIED" then
+            for i=1,GetNumSubgroupMembers(LE_PARTY_CATEGORY_HOME) do
+                local member = "party"..i
+                local name = UnitName(member)
+                
+                if UnitExists(member) then
+                    if not CheckInteractDistance(member, 1) then
+                        aura_env.SendWhisper("You are out of inspect range to the pusher. Please get closer to the pusher so we can inspect your honor kills.", name)
+                    elseif CanInspect(member) then
+                        NotifyInspect(member)
+                        RequestInspectHonorData()
+                        
+                        local todayHK = GetInspectHonorData()
 
-            if UnitExists(member) and not UnitIsConnected(member) then
-               UninviteUnit(member)
+                        if todayHK == 10 then
+                            aura_env.SendWhisper("You are approaching 15 kills - prepare to log the next character.", name)
+                        end
+                        
+                        if todayHK >= 15 then
+                            aura_env.SendWhisper("You now have 15 hks. Thank you for boosting and please log the next character.", name)
+                        end
+                    end
+                end
             end
-         end
+        end
     end
 
-    return false
+    return true
 end
