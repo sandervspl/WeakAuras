@@ -4,7 +4,7 @@ aura_env.constants = {
     AMOUNT = 2,
 }
 
-aura_env.players = {
+aura_env.boosts = {
     fire = 0,
     gehe = 0,
     mogr = 0,
@@ -12,4 +12,5 @@ aura_env.players = {
     gole = 0,
 }
 aura_env.characters = {}
+aura_env.charactersCounted = {}
 aura_env.total = 0
