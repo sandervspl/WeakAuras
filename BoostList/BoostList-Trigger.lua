@@ -3,20 +3,10 @@
 function(event, msg, sender)
     if event == "CHAT_MSG_WHISPER" then
         local characterName = sender:match("(.+)-")
-        local faction = UnitFactionGroup("player")
-        local lang = faction == "Horde" and "orcish" or "common"
-
-        function SendWhisper(str)
-            SendChatMessage(str, "WHISPER", lang, sender)
-        end
-
-        function SendInviteError()
-            SendWhisper("Error: Please add your server name (fire, gehe, mogr, luci, gole) to your whisper. Example: 'inv fire'")
-        end
 
         -- Invalid whisper
         if string.sub(string.lower(msg), 0, 4) ~= "inv " then
-            SendInviteError()
+            aura_env.SendInviteError(sender)
             
             return false
         end
@@ -29,7 +19,7 @@ function(event, msg, sender)
 
         -- Invalid whisper, no server name given
         if string.len(serverName) == 0 then
-            SendInviteError()
+            aura_env.SendInviteError(sender)
 
             return false
         end
@@ -43,7 +33,7 @@ function(event, msg, sender)
         end
 
         if wrongServerName then
-            SendInviteError()
+            aura_env.SendInviteError(sender)
 
             return false
         end
