@@ -1,3 +1,5 @@
+-- CHAT_MSG_WHISPER,CHAT_MSG_SYSTEM,RAID_ROSTER_CHANGED
+
 function(event, msg, sender)
     if event == "CHAT_MSG_WHISPER" then
         local characterName = sender:match("(.+)-")
@@ -86,6 +88,15 @@ function(event, msg, sender)
 
             return true
        end
+
+    elseif event == "RAID_ROSTER_CHANGED" then
+        for i=1,40 do
+            local member = "party"..i
+
+            if UnitExists(member) and not UnitIsConnected(member) then
+               UninviteUnit(member)
+            end
+         end
     end
 
     return false
