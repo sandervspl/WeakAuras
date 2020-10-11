@@ -91,33 +91,37 @@ function(event, msg, sender)
        end
     
     elseif event == "COMBAT_LOG_EVENT_UNFILTERED" then
-        local subevent = sender
+        -- local subevent = sender
 
-        if subevent == "UNIT_DIED" then
-            for i=1,GetNumSubgroupMembers(LE_PARTY_CATEGORY_HOME) do
-                local member = "party"..i
-                local name = UnitName(member)
+        -- if subevent == "UNIT_DIED" then
+        --     for i=1,GetNumSubgroupMembers(LE_PARTY_CATEGORY_HOME) do
+        --         ClearInspectPlayer()
+
+        --         local member = "party"..i
+        --         local name = UnitName(member)
                 
-                if UnitExists(member) then
-                    if not CheckInteractDistance(member, 1) then
-                        aura_env.SendWhisper("You are out of inspect range to the pusher. Please get closer to the pusher so we can inspect your honor kills.", name)
-                    elseif CanInspect(member) then
-                        NotifyInspect(member)
-                        RequestInspectHonorData()
+        --         if UnitExists(member) then
+        --             if not CheckInteractDistance(member, 1) then
+        --                 aura_env.SendWhisper("You are out of inspect range to the pusher. Please get closer to the pusher so we can inspect your honor kills.", name)
+        --             elseif CanInspect(member) then
+        --                 NotifyInspect(member)
+        --                 RequestInspectHonorData()
                         
-                        local todayHK = GetInspectHonorData()
+        --                 local todayHK = GetInspectHonorData()
 
-                        if todayHK == 10 then
-                            aura_env.SendWhisper("You are approaching 15 kills - prepare to log the next character.", name)
-                        end
+        --                 print(todayHK, member, name)
+
+        --                 if todayHK == 10 then
+        --                     aura_env.SendWhisper("You are approaching 15 kills - prepare to log the next character.", name)
+        --                 end
                         
-                        if todayHK >= 15 then
-                            aura_env.SendWhisper("You now have 15 hks. Thank you for boosting and please log the next character.", name)
-                        end
-                    end
-                end
-            end
-        end
+        --                 if todayHK >= 15 then
+        --                     aura_env.SendWhisper("You now have 15 hks. Thank you for boosting and please log the next character.", name)
+        --                 end
+        --             end
+        --         end
+        --     end
+        -- end
     end
 
     return true
