@@ -2,7 +2,6 @@
 
 function(event, msg, sender)
     if event == "CHAT_MSG_WHISPER" then
-
         -- Invalid whisper
         if string.sub(string.lower(msg), 0, 4) ~= "inv " then
             aura_env.SendInviteError(sender)
@@ -53,13 +52,18 @@ function(event, msg, sender)
         local pattern = gsub(stringConstant, "%%s", "(.+)")
         local characterName = strmatch(msg, pattern)
 
-        if characterName then
-            if aura_env.charactersCounted[characterName] ~= nil then
-                return true
-            end
-
+        if characterName and not aura_env.charactersCounted[characterName] then
             -- Add one to server amount
             local serverName = aura_env.characters[characterName]
+
+            -- Sometimes names are appended with server name for some reason
+            if not serverName then
+                local realmName = GetRealmName()
+                local characterNameWithServer = characterName .. "-" .. realmName
+
+                serverName = aura_env.characters[characterNameWithServer]
+            end
+
             aura_env.boosts[serverName] = aura_env.boosts[serverName] + 1
 
             -- Update total character count
