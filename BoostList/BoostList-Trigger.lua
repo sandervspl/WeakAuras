@@ -7,7 +7,13 @@ function(event, msg, sender)
         -- Status update whisper
         if string.sub(string.lower(msg), 0, 6) == "status" then
             local serverName = string.sub(string.lower(msg), 8)
-            local count = aura_env.boosts[serverName]
+            local count = 0
+
+            if serverName == "total" then
+                count = aura_env.total
+            else
+                count = aura_env.boosts[serverName]
+            end
 
             aura_env.SendWhisper("Total for " .. serverName .. " = " .. count, sender)
 
