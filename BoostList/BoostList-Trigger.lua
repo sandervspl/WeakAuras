@@ -1,24 +1,7 @@
--- CHAT_MSG_WHISPER,CHAT_MSG_SYSTEM,COMBAT_LOG_EVENT_UNFILTERED
+-- CHAT_MSG_WHISPER,CHAT_MSG_SYSTEM
 
 function(event, msg, sender)
     if event == "CHAT_MSG_WHISPER" then
-        local characterName = sender:match("(.+)-")
-
-        -- Status update whisper
-        if string.sub(string.lower(msg), 0, 6) == "status" then
-            local serverName = string.sub(string.lower(msg), 8)
-            local count = 0
-
-            if serverName == "total" then
-                count = aura_env.total
-            else
-                count = aura_env.boosts[serverName]
-            end
-
-            aura_env.SendWhisper("Total for " .. serverName .. " = " .. count, sender)
-
-            return true
-        end
 
         -- Invalid whisper
         if string.sub(string.lower(msg), 0, 4) ~= "inv " then
@@ -54,20 +37,12 @@ function(event, msg, sender)
             return true
         end
 
-        if GetNumGroupMembers() >= 40 then
-            aura_env.SendWhisper("Group is currently full, please try again in a minute.", sender)
-
-            return true
-        end
-
         -- Add character and server to list
-        aura_env.characters[characterName] = serverName
+        aura_env.characters[sender] = serverName
 
         -- Invite player to group
         InviteUnit(sender)
 
-        return true
-    
     elseif event == "CHAT_MSG_SYSTEM" then
         local stringConstant = ERR_JOINED_GROUP_S
 
@@ -92,42 +67,7 @@ function(event, msg, sender)
 
             -- Save counted status of this character
             aura_env.charactersCounted[characterName] = true
-
-            return true
        end
-    
-    elseif event == "COMBAT_LOG_EVENT_UNFILTERED" then
-        -- local subevent = sender
-
-        -- if subevent == "UNIT_DIED" then
-        --     for i=1,GetNumSubgroupMembers(LE_PARTY_CATEGORY_HOME) do
-        --         ClearInspectPlayer()
-
-        --         local member = "party"..i
-        --         local name = UnitName(member)
-                
-        --         if UnitExists(member) then
-        --             if not CheckInteractDistance(member, 1) then
-        --                 aura_env.SendWhisper("You are out of inspect range to the pusher. Please get closer to the pusher so we can inspect your honor kills.", name)
-        --             elseif CanInspect(member) then
-        --                 NotifyInspect(member)
-        --                 RequestInspectHonorData()
-                        
-        --                 local todayHK = GetInspectHonorData()
-
-        --                 print(todayHK, member, name)
-
-        --                 if todayHK == 10 then
-        --                     aura_env.SendWhisper("You are approaching 15 kills - prepare to log the next character.", name)
-        --                 end
-                        
-        --                 if todayHK >= 15 then
-        --                     aura_env.SendWhisper("You now have 15 hks. Thank you for boosting and please log the next character.", name)
-        --                 end
-        --             end
-        --         end
-        --     end
-        -- end
     end
 
     return true
