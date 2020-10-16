@@ -10,38 +10,24 @@ function(event, msg, sender)
         end
         
         -- Format name
-        local serverName = string.gsub(msg, "%W+", "")
-        serverName = string.gsub(serverName, "%d+", "")
-        serverName = string.lower(serverName)
-        serverName = string.sub(serverName, 4)
+        local boosterName = string.gsub(msg, "%W+", "")
+        boosterName = string.gsub(boosterName, "%d+", "")
+        boosterName = string.lower(boosterName)
+        boosterName = string.sub(boosterName, 4)
         
-        -- Invalid whisper, no server name given
-        if string.len(serverName) == 0 then
+        -- Invalid whisper, no booster name given
+        if string.len(boosterName) == 0 then
             aura_env.SendInviteError(sender)
             
             return true
         end
-        
-        -- Invalid whisper, wrong server name
-        local wrongServerName = true
-        for k,v in pairs(aura_env.boosts) do
-            if v == serverName then
-                wrongServerName = false
-            end
-        end
-        
-        if wrongServerName then
-            aura_env.SendInviteError(sender)
-            
-            return true
-        end
-        
-        -- Add character and server to list
-        aura_env.characters[sender] = serverName
-        
+
+        -- Link booster to char name
+        aura_env.charLinkList[sender] = boosterName
+
         -- Invite player to group
         InviteUnit(sender)
-        
+
     elseif event == "CHAT_MSG_SYSTEM" then
         local stringConstant = ERR_JOINED_GROUP_S
         
@@ -50,27 +36,30 @@ function(event, msg, sender)
         end
         
         local pattern = gsub(stringConstant, "%%s", "(.+)")
-        local characterName = strmatch(msg, pattern)
+        local charName = strmatch(msg, pattern)
         
-        if characterName and not aura_env.charactersCounted[characterName] then
-            -- Add one to server amount
-            local serverName = aura_env.characters[characterName]
-            
-            -- Sometimes names are appended with server name for some reason
-            if not serverName then
+        if charName then
+            local name = charName
+
+            -- Try get data with realm name
+            if not aura_env.charLinkList[name] then
                 local realmName = GetRealmName()
-                local characterNameWithServer = characterName .. "-" .. realmName
-                
-                serverName = aura_env.characters[characterNameWithServer]
+                name = name .. "-" .. realmName
             end
-            
-            aura_env.boosts[serverName] = aura_env.boosts[serverName] + 1
-            
-            -- Update total character count
-            aura_env.total = aura_env.total + 1
-            
-            -- Save counted status of this character
-            aura_env.charactersCounted[characterName] = true
+
+            local boosterName = aura_env.charLinkList[name]
+
+            if boosterName then
+                -- Add one to server amount
+                if aura_env.boosts[boosterName] ~= nil then
+                    aura_env.boosts[boosterName] = aura_env.boosts[boosterName] + 1
+                else
+                    aura_env.boosts[boosterName] = 1
+                end
+                
+                -- Update total character count
+                aura_env.total = aura_env.total + 1
+            end
         end
     end
     
