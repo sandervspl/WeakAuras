@@ -29,7 +29,9 @@ function(event, ...)
         end
         
         -- Send invite message
-        if not aura_env.sentMsg and aura_env.config.leader ~= "" and not IsInGroup() then
+        local hk = GetPVPSessionStats()
+        
+        if not aura_env.sentMsg and aura_env.config.leader ~= "" and not IsInGroup() and hk < 15 then
             local useWhisper = aura_env.config.messageChannel == 1
             
             if (isInTriggerZone or isInKillZone) and useWhisper then
@@ -62,6 +64,3 @@ function(event, ...)
     
     return false
 end
-
-
-

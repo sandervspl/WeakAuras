@@ -7,6 +7,3 @@ function(event, ...)
     
     return false
 end
-
-
-
