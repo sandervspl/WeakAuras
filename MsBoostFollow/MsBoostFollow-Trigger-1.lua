@@ -7,7 +7,7 @@ function(event, ...)
     end
     
     -- Accept party invite
-    if event == "PARTY_INVITE_REQUEST" and (UnitName("player") == "Mstwo" or UnitName("player") == "Msthree") then
+    if event == "PARTY_INVITE_REQUEST" and UnitName("player") ~= "Msone" then
         AcceptGroup()
         StaticPopup_Hide("PARTY_INVITE")
     end
