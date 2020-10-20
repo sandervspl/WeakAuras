@@ -19,7 +19,7 @@ function(event, ...)
             if UnitIsGroupLeader(unit) then
                 FollowUnit(unit)
                 
-                if IsInGroup() and not UnitIsGroupLeader("player") then
+                if IsInGroup() then
                     LeaveParty()
                 end
             end
