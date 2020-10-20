@@ -29,13 +29,13 @@ function(event, msg, sender)
         InviteUnit(sender)
 
     elseif event == "CHAT_MSG_SYSTEM" then
-        local stringConstant = ERR_JOINED_GROUP_S
+        local joinGroupStr = ERR_JOINED_GROUP_S
         
         if UnitInRaid("player") then
-            stringConstant = ERR_RAID_MEMBER_ADDED_S
+            joinGroupStr = ERR_RAID_MEMBER_ADDED_S
         end
         
-        local pattern = gsub(stringConstant, "%%s", "(.+)")
+        local pattern = gsub(joinGroupStr, "%%s", "(.+)")
         local charName = strmatch(msg, pattern)
         
         if charName then
