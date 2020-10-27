@@ -1,4 +1,4 @@
--- ZONE_CHANGED,ZONE_CHANGED_NEW_AREA,PLAYER_ENTERING_WORLD,PARTY_INVITE_REQUEST,PLAY_MOVIE,CINEMATIC_START
+-- ZONE_CHANGED,ZONE_CHANGED_NEW_AREA,PLAYER_ENTERING_WORLD,PARTY_INVITE_REQUEST,PLAY_MOVIE,CINEMATIC_START,GROUP_LEFT
 
 function(event, ...)
     if event == "PLAY_MOVIE" then
@@ -31,13 +31,17 @@ function(event, ...)
         -- Send invite message
         local hk = GetPVPSessionStats()
         
-        if aura_env.config.autoSendWhisper and not aura_env.sentMsg and aura_env.config.leader ~= "" and not IsInGroup() and hk < 15 then
+        if aura_env.config.autoSendWhisper and aura_env.config.leader ~= "" and not IsInGroup() and hk < 15 then
             local useWhisper = aura_env.config.messageChannel == 1
             
             if (isInTriggerZone or isInKillZone) and useWhisper then
-                SendChatMessage(aura_env.trim(aura_env.config.msg), "WHISPER", nil, aura_env.trim(aura_env.config.leader))
-                
-                aura_env.sentMsg = true
+                if not aura_env.sentMsg then
+                    SendChatMessage(aura_env.trim(aura_env.config.msg), "WHISPER", nil, aura_env.trim(aura_env.config.leader))
+                    
+                    aura_env.sentMsg = true
+                elseif event == "GROUP_LEFT" then
+                    SendChatMessage(aura_env.trim(aura_env.config.msg), "WHISPER", nil, aura_env.trim(aura_env.config.leader))
+                end
             end
         end
         
@@ -64,3 +68,4 @@ function(event, ...)
     
     return false
 end
+
