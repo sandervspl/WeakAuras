@@ -12,6 +12,10 @@ function(event, ...)
             
             local streak = aura_env.streak
             local now = GetTime()
+
+            if streak > 0 and aura_env.streak_timed == 0 then
+                aura_env.streak_timed = aura_env.streak_timed + 1
+            end
             
             if now - aura_env.prev_kill_time < 10 then
                 aura_env.streak_timed = aura_env.streak_timed + 1
@@ -41,7 +45,7 @@ function(event, ...)
             aura_env.prev_kill_time = now
             aura_env.sound_id = sound_id
 
-            print("killstreak:", aura_env.streak)
+            print("Killstreak:", aura_env.streak)
         elseif subevent == "UNIT_DIED" then
             if destGUID == UnitGUID("player") then
                 aura_env.streak = 0
