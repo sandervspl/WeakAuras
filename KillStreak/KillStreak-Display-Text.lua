@@ -1,7 +1,7 @@
 function()
     local playerName = WA_ClassColorName("player")
     local streakText = aura_env.streak_text[aura_env.streak]
-    local streakTimedText = aura_env.streak_timed_text[aura_env.streak_timed_text]
+    local streakTimedText = aura_env.streak_timed_text[aura_env.streak_timed]
 
     if streakText and streakTimedText then
         if aura_env.streak_timed < 4 then
