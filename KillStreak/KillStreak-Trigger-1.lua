@@ -44,11 +44,13 @@ function(event, ...)
         aura_env.sound_id = sound_id
 
         print("Killstreak:", aura_env.streak)
+
+        return aura_env.streak >= 3 or aura_env.streak_timed >= 2
     elseif subevent == "UNIT_DIED" then
         if destGUID == UnitGUID("player") then
             aura_env.streak = 0
         end
     end
 
-    return aura_env.streak >= 3 or aura_env.streak_timed >= 2
+    return false
 end
