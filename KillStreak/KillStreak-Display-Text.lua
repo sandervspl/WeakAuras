@@ -3,6 +3,10 @@ function()
     local streakText = aura_env.streak_text[aura_env.streak]
     local streakTimedText = aura_env.streak_timed_text[aura_env.streak_timed]
 
+    if aura_env.streak > 10 then
+        streakText = aura_env.streak_text[10]
+    end
+
     if streakText and streakTimedText then
         if aura_env.streak_timed < 4 then
             streakTimedText = "|nwith a " .. streakTimedText
@@ -10,11 +14,17 @@ function()
             streakTimedText = "|nwith an " .. streakTimedText
         end
 
-        return playerName .. " is " .. streakText .. streakTimedText
+        return playerName .. " is " .. streakText.str .. streakTimedText
     elseif streakText and not streakTimedText then
-        return playerName .. " is " .. streakText
+        return playerName .. " is " .. streakText.str
     elseif not streakText and streakTimedText then
-        return playerName .. " is " .. streakTimedText
+        if aura_env.streak_timed >= 5 then
+            return playerName .. streakTimedText
+        elseif aura_env.streak_timed == 4 then
+            return playerName .. " got an " .. streakTimedText
+        else
+            return playerName .. " got a " .. streakTimedText
+        end
     else
         return ""
     end
