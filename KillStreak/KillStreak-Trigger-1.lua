@@ -6,6 +6,7 @@ function(event, ...)
     if subevent == "PARTY_KILL" and sourceGUID == UnitGUID("player") then
         if not UnitIsDead("player") then
             aura_env.streak = aura_env.streak + 1
+            PlaySoundFile("Interface\\media\\hit_marker.mp3")
         end
         
         local streak = aura_env.streak
@@ -53,14 +54,13 @@ function(event, ...)
         aura_env.prev_kill_time = now
 
         -- Debug
-        print("Killstreak:", streak, " Timed streak:", streak_timed)
+        print("Killstreak:", streak, "Timed streak:", streak_timed)
 
         -- Determine if we show text
         return aura_env.streak >= 3 or aura_env.streak_timed >= 2
-    elseif subevent == "UNIT_DIED" then
-        if destGUID == UnitGUID("player") then
-            aura_env.streak = 0
-        end
+        -- Reset streak on death
+    elseif subevent == "UNIT_DIED" and destGUID == UnitGUID("player") then
+        aura_env.streak = 0
     end
 
     return false
