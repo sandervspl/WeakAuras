@@ -1,0 +1,29 @@
+{
+    "Lua.diagnostics.globals": [
+        "aura_env",
+        "WA_ClassColorName",
+        "UnitRace",
+        "WeakAuras",
+        "CreateFrame",
+        "GetSubZoneText",
+        "GetZoneText",
+        "IsInGroup",
+        "GetPVPSessionStats",
+        "UnitIsGroupLeader",
+        "PlaySoundFile",
+        "CinematicFrame",
+        "StopCinematic",
+        "CanCancelScene",
+        "CancelScene",
+        "SetPVP",
+        "SendChatMessage",
+        "GetContainerItemLink",
+        "PickupContainerItem",
+        "DeleteCursorItem",
+        "AcceptGroup",
+        "StaticPopup_Hide",
+        "UnitFactionGroup",
+        "GetNumBattlefieldScores",
+        "GetClassColor"
+    ]
+}
