@@ -1,6 +1,6 @@
 -- ZONE_CHANGED,ZONE_CHANGED_NEW_AREA,PLAYER_ENTERING_WORLD,GROUP_JOINED,GROUP_LEFT
 
-function (event, ...)
+function(event, ...)
     local subzone = string.lower(GetSubZoneText())
     local zone = string.lower(GetZoneText())
     local killzone = aura_env.zones[2]
