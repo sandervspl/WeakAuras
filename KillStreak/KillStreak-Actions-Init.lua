@@ -5,8 +5,8 @@ aura_env.prev_kill_time = GetTime()
 aura_env.next_sound_time = nil
 aura_env.max_time_between_kills = 20
 aura_env.sound_path = {
-    streak = "Interface\\AddOns\\KillingStreaks\\Dota",
-    timed = "Interface\\AddOns\\KillingStreaks\\DotaTimed",
+    streak = "Interface\\media\\streak",
+    timed = "Interface\\media\\streakTimed",
 }
 aura_env.PlaySound = function(path)
     if aura_env.sound_id and aura_env.sound_id >= 0 then
@@ -14,7 +14,7 @@ aura_env.PlaySound = function(path)
         aura_env.sound_id = -1
     end
 
-    _, sound_id = PlaySoundFile(path, "master")
+    local _, sound_id = PlaySoundFile(path, "master")
     aura_env.sound_id = sound_id
 end
 aura_env.streak_text = {}
