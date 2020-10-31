@@ -24,6 +24,7 @@
         "StaticPopup_Hide",
         "UnitFactionGroup",
         "GetNumBattlefieldScores",
-        "GetClassColor"
+        "GetClassColor",
+        "GetBattlefieldScore"
     ]
 }
