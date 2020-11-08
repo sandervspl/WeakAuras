@@ -186,6 +186,10 @@ function(states, event, ...)
                         channel = "RAID"
                     end
 
+                    if UnitInBattleground("player") > 0 then
+                        channel = "INSTANCE_CHAT"
+                    end
+
                     C_ChatInfo.SendAddonMessage(aura_env.prefix, dataStr, channel)
                 end
             else
