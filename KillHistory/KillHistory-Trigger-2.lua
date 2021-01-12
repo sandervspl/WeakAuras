@@ -1,49 +1,61 @@
+-- UPDATE_BATTLEFIELD_SCORE
+
 function(states, event, ...)
-    local _, subevent, _, sourceGUID, sourceName, _, _, destGUID, destName = ...
-    local enemyColorName = aura_env.enemies[destName]
+   for i = 1, GetNumBattlefieldScores() do
+      local name, killingBlows, _, deaths, _, faction = GetBattlefieldScore(i)
+      local playerFaction = UnitFactionGroup("player")
 
-    if not enemyColorName then
-        enemyColorName = destName
-    end
+      if string.lower(playerFaction) == "alliance" then
+         playerFaction = 1
+      else
+         playerFaction = 0
+      end
 
-    if subevent == "PARTY_KILL" then
-        local data = {
-            changed = true,
-            show = true,
-            name = WA_ClassColorName(sourceName) .. " killed " .. enemyColorName,
-        }
+      local playerStats = aura_env.stats[name]
+      local newData = {
+         name = name,
+         killingBlows = killingBlows,
+         deaths = deaths,
+      }
 
-        -- Move state1 to state2, state2 to state3, etc.
-        if table.getn(states) > 0 then
-            local tempState = states[1]
-            states[1] = data
+      -- print(name, ": kb =", killingBlows, "d =", deaths)
 
-            if table.getn(states) >= 5 then
-               table.remove(states, 5)
-            end
-
-            local statesLen = table.getn(states)
-            local max = statesLen + 1
-
-            if statesLen >= 5 then
-               statesLen = 5
-            end
-
-            for i = 2, max do
-               tempState.changed = true
-
-               if i == 5 then
-                  states[i] = tempState
-               else
-                  local temp2state = states[i]
-                  states[i] = tempState
-                  tempState = temp2state
-               end
-            end
-         else
-            table.insert(states, data)
+      if not playerStats then
+         aura_env.stats[name] = newData
+      else
+         if killingBlows ~= playerStats.killingBlows then
+            print(name, "got a kill")
+            table.insert(aura_env.kills, name)
          end
-    end
 
-    return true
+         if deaths ~= playerStats.deaths then
+            print(name, "died")
+            table.insert(aura_env.deaths, name)
+         end
+
+         for j = 1, table.getn(aura_env.kills) do
+            -- local enemyColorName = aura_env.enemies[destName]
+
+            -- if not enemyColorName then
+            --    enemyColorName = destName
+            -- end
+
+            local name1 = aura_env.enemies[aura_env.kills[j]] or aura_env.kills[j]
+            local name2 = aura_env.enemies[aura_env.deaths[j]] or aura_env.deaths[j]
+
+            if aura_env.deaths[j] then
+               local data = {
+                  changed = true,
+                  show = true,
+                  name = WA_ClassColorName(aura_env.kills) .. " killed " .. enemyColorName,
+              }
+
+               table.insert(states, data)
+         end
+
+         aura_env.stats[name] = newData
+      end
+   end
+
+   return true
 end

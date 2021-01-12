@@ -16,5 +16,5 @@ function(event, ...)
         if name ~= nil and name ~= "Unknown" and type(name) == "string" and string.len(name) > 1 and playerFaction ~= faction and not aura_env.enemies[name] and hex then
             aura_env.enemies[name] = "|c" .. hex .. name .. "|r"
         end
-    end	
+    end
 end
