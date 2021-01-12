@@ -1,3 +1,5 @@
+-- COMBAT_LOG_EVENT_UNFILTERED
+
 function(event, ...)
     local timestamp, subevent, _, sourceGUID, sourceName, _, _, destGUID, destName = ...
 
