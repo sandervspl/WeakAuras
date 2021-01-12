@@ -16,7 +16,6 @@ function(event, ...)
     local subzone = string.lower(GetSubZoneText())
     local zone = string.lower(GetZoneText())
     
-    local charRace = aura_env.config.char_race
     local triggerzone = aura_env.zones[1]
     local killzone = aura_env.zones[2]
     local isInTriggerZone = subzone == triggerzone or zone == triggerzone
@@ -34,13 +33,11 @@ function(event, ...)
         if aura_env.config.autoSendWhisper and aura_env.config.leader ~= "" and not IsInGroup() and hk < 15 then
             local useWhisper = aura_env.config.messageChannel == 1
             
-            if (isInTriggerZone or isInKillZone) and useWhisper then
-                if not aura_env.sentMsg then
+            if useWhisper then
+                if not aura_env.sentMsg or event == "GROUP_LEFT" then
                     SendChatMessage(aura_env.trim(aura_env.config.msg), "WHISPER", nil, aura_env.trim(aura_env.config.leader))
                     
                     aura_env.sentMsg = true
-                elseif event == "GROUP_LEFT" then
-                    SendChatMessage(aura_env.trim(aura_env.config.msg), "WHISPER", nil, aura_env.trim(aura_env.config.leader))
                 end
             end
         end
