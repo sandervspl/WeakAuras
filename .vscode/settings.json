@@ -25,6 +25,16 @@
         "UnitFactionGroup",
         "GetNumBattlefieldScores",
         "GetClassColor",
-        "GetBattlefieldScore"
+        "GetBattlefieldScore",
+        "GetTime",
+        "UnitIsPlayer",
+        "UnitIsEnemy",
+        "UnitGUID",
+        "WA_IterateGroupMembers",
+        "UnitName",
+        "UnitAura",
+        "UnitDebuff",
+        "strsplit",
+        "GetSpellInfo"
     ]
 }
