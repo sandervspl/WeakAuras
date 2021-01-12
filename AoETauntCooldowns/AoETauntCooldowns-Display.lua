@@ -1,16 +1,32 @@
 -- Every Frame
 
 function()
-    if aura_env.state.expirationTime ~= nil and aura_env.state.expirationTime > GetTime() then
-        local delta = aura_env.state.expirationTime - GetTime() + 1
-        local time = SecondsToTime(delta)
+    local now = GetTime()
+    local str = ""
 
-        if delta < 4 then
-            time = "|cFFfc8803" .. time .. "|r"
-        end
+    if aura_env.state.expirationTimeSpell ~= nil and aura_env.state.expirationTimeSpell > now then
+        local delta = aura_env.state.expirationTimeSpell - now
+        local noSeconds = delta > 60
+        local time = SecondsToTime(delta, noSeconds)
 
-        return time
+        str = time
     else
-        return "|cFF03fc03Ready|r"
+        str = "|cFF03fc03Ready|r"
     end
+
+    if aura_env.state.expirationTimePot ~= nil and aura_env.state.expirationTimePot > now then
+        local delta = aura_env.state.expirationTimePot - now
+        local noSeconds = delta > 60
+        local time = SecondsToTime(delta, noSeconds)
+
+        str = str .. " / |cFFeaf522" .. time .. "|r"
+    else
+        str = str .. " / |cFFeaf522Ready|r"
+    end
+
+    if (aura_env.state.expirationTimeSpell == nil or aura_env.state.expirationTimePot == nil) or now > aura_env.state.expirationTimeSpell and now > aura_env.state.expirationTimePot then
+        str = "|cFF03fc03Ready|r / |cFFeaf522Ready|r"
+    end
+
+    return str
 end

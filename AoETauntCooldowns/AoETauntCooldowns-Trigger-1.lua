@@ -6,8 +6,25 @@ function(states, event, ...)
     if subevent == "SPELL_CAST_SUCCESS" then
         if spellName == aura_env.spellName then
             states[sourceGUID].changed = true
-            states[sourceGUID].duration = aura_env.cd
-            states[sourceGUID].expirationTime = GetTime() + aura_env.cd
+            states[sourceGUID].expirationTimeSpell = GetTime() + aura_env.spellCd
+
+            local shoutExpirationTime = GetTime() + aura_env.spellCd
+
+            if not states[sourceGUID].expirationTime or (states[sourceGUID].expirationTime and shoutExpirationTime > states[sourceGUID].expirationTime) then
+                states[sourceGUID].duration = aura_env.spellCd
+                states[sourceGUID].expirationTime = shoutExpirationTime
+            end
+        elseif strfind(spellName, " Potion") then
+            states[sourceGUID].changed = true
+            states[sourceGUID].expirationTimePot = GetTime() + aura_env.potCd
+
+            local potExpirationTime = GetTime() + aura_env.potCd
+
+            if not states[sourceGUID].expirationTime or (states[sourceGUID].expirationTime and potExpirationTime > states[sourceGUID].expirationTime) then
+                states[sourceGUID].duration = aura_env.potCd
+                states[sourceGUID].expirationTime = potExpirationTime
+            end
+
         end
     else
         local warGuids = {}
@@ -29,6 +46,10 @@ function(states, event, ...)
                         autoHide = false,
                         progressType = "timed",
                         name = UnitName(unit),
+                        expirationTimeSpell = GetTime(),
+                        expirationTimePot = GetTime(),
+                        isShout = false,
+                        isPot = false,
                     }
                 end
             end
