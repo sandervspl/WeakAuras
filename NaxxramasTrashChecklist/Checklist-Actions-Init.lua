@@ -1,8 +1,12 @@
 aura_env.wings = {"Abomination Wing", "Spider Wing", "Military Wing", "Plague Wing", "Outer Ring"}
-aura_env.unitKills = {}
+aura_env.unitKills = aura_env.unitKills or WeakAurasSaved["displays"][aura_env.id].unitKills or nil
 
-for i,unit in ipairs(aura_env.config.units) do
-    aura_env.unitKills[unit.name] = 0
+if aura_env.unitKills == nil then
+    aura_env.unitKills = {}
+
+    for i,unit in ipairs(aura_env.config.units) do
+        aura_env.unitKills[unit.name] = 0
+    end
 end
 
 aura_env.split = function(str, delimiter)
