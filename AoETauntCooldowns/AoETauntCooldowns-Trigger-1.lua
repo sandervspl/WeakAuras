@@ -6,19 +6,24 @@ function(states, event, ...)
     if subevent == "SPELL_CAST_SUCCESS" then
         if spellName == aura_env.spellName then
             local expirationTimeSpell = GetTime() + aura_env.spellCd
+
+            states[sourceGUID].changed = true
             states[sourceGUID].expirationTimeSpell = expirationTimeSpell
 
+
+            -- Check if we need to update the bar duration
             if not states[sourceGUID].expirationTime or (states[sourceGUID].expirationTime and expirationTimeSpell > states[sourceGUID].expirationTime) then
-                states[sourceGUID].changed = true
                 states[sourceGUID].duration = aura_env.spellCd
                 states[sourceGUID].expirationTime = expirationTimeSpell
             end
         elseif strfind(spellName, " Potion") then
             local expirationTimePot = GetTime() + aura_env.potCd
+
+            states[sourceGUID].changed = true
             states[sourceGUID].expirationTimePot = expirationTimePot
 
+            -- Check if we need to update the bar duration
             if not states[sourceGUID].expirationTime or (states[sourceGUID].expirationTime and expirationTimePot > states[sourceGUID].expirationTime) then
-                states[sourceGUID].changed = true
                 states[sourceGUID].duration = aura_env.potCd
                 states[sourceGUID].expirationTime = expirationTimePot
             end
