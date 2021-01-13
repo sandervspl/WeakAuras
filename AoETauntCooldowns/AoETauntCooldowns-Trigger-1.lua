@@ -17,8 +17,10 @@ function(states, event, ...)
             end
 
             -- Save to db
-            aura_env.warriors[sourceGUID] = {}
-            aura_env.warriors[sourceGUID].name = sourceName
+            if not aura_env.warriors[sourceGUID] then
+                aura_env.warriors[sourceGUID] = {}
+                aura_env.warriors[sourceGUID].name = sourceName
+            end
             aura_env.warriors[sourceGUID] = states[sourceGUID]
 
             WeakAurasSaved["displays"][aura_env.id].warriors = aura_env.warriors
@@ -35,8 +37,10 @@ function(states, event, ...)
             end
 
             -- Save to db
-            aura_env.warriors[sourceGUID] = {}
-            aura_env.warriors[sourceGUID].name = sourceName
+            if not aura_env.warriors[sourceGUID] then
+                aura_env.warriors[sourceGUID] = {}
+                aura_env.warriors[sourceGUID].name = sourceName
+            end
             aura_env.warriors[sourceGUID] = states[sourceGUID]
 
             WeakAurasSaved["displays"][aura_env.id].warriors = aura_env.warriors
