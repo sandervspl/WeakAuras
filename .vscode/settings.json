@@ -36,6 +36,8 @@
         "UnitDebuff",
         "strsplit",
         "GetSpellInfo",
-        "WeakAurasSaved"
+        "WeakAurasSaved",
+        "StaticPopupDialogs",
+        "StaticPopup_Show"
     ]
 }
