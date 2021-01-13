@@ -5,27 +5,28 @@ function(states, event, ...)
 
     if subevent == "SPELL_CAST_SUCCESS" then
         if spellName == aura_env.spellName then
-            states[sourceGUID].changed = true
-            states[sourceGUID].expirationTimeSpell = GetTime() + aura_env.spellCd
+            local expirationTimeSpell = GetTime() + aura_env.spellCd
+            states[sourceGUID].expirationTimeSpell = expirationTimeSpell
 
-            local shoutExpirationTime = GetTime() + aura_env.spellCd
-
-            if not states[sourceGUID].expirationTime or (states[sourceGUID].expirationTime and shoutExpirationTime > states[sourceGUID].expirationTime) then
+            if not states[sourceGUID].expirationTime or (states[sourceGUID].expirationTime and expirationTimeSpell > states[sourceGUID].expirationTime) then
+                states[sourceGUID].changed = true
                 states[sourceGUID].duration = aura_env.spellCd
-                states[sourceGUID].expirationTime = shoutExpirationTime
+                states[sourceGUID].expirationTime = expirationTimeSpell
             end
         elseif strfind(spellName, " Potion") then
-            states[sourceGUID].changed = true
-            states[sourceGUID].expirationTimePot = GetTime() + aura_env.potCd
+            local expirationTimePot = GetTime() + aura_env.potCd
+            states[sourceGUID].expirationTimePot = expirationTimePot
 
-            local potExpirationTime = GetTime() + aura_env.potCd
-
-            if not states[sourceGUID].expirationTime or (states[sourceGUID].expirationTime and potExpirationTime > states[sourceGUID].expirationTime) then
+            if not states[sourceGUID].expirationTime or (states[sourceGUID].expirationTime and expirationTimePot > states[sourceGUID].expirationTime) then
+                states[sourceGUID].changed = true
                 states[sourceGUID].duration = aura_env.potCd
-                states[sourceGUID].expirationTime = potExpirationTime
+                states[sourceGUID].expirationTime = expirationTimePot
             end
-
         end
+
+        aura_env.warriors[sourceGUID].name = sourceName
+        aura_env.warriors[sourceGUID] = states[sourceGUID]
+        WeakAurasSaved["displays"][aura_env.id].warriors = aura_env.warriors
     else
         local warGuids = {}
 
@@ -45,9 +46,11 @@ function(states, event, ...)
                         show = true,
                         autoHide = false,
                         progressType = "timed",
-                        name = UnitName(unit),
-                        expirationTimeSpell = GetTime(),
-                        expirationTimePot = GetTime(),
+                        name = aura_env.warriors[guid] and aura_env.warriors[guid].name or UnitName(unit),
+                        expirationTimeSpell = aura_env.warriors[guid] and aura_env.warriors[guid].expirationTimeSpell or GetTime(),
+                        expirationTimePot = aura_env.warriors[guid] and aura_env.warriors[guid].expirationTimePot or GetTime(),
+                        expirationTime = aura_env.warriors[guid] and aura_env.warriors[guid].expirationTime or nil,
+                        duration = aura_env.warriors[guid] and aura_env.warriors[guid].duration or nil,
                         isShout = false,
                         isPot = false,
                     }

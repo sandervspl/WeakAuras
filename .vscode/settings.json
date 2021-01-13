@@ -35,6 +35,7 @@
         "UnitAura",
         "UnitDebuff",
         "strsplit",
-        "GetSpellInfo"
+        "GetSpellInfo",
+        "WeakAurasSaved"
     ]
 }
