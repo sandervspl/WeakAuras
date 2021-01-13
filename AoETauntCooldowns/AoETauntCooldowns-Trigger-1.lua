@@ -10,12 +10,18 @@ function(states, event, ...)
             states[sourceGUID].changed = true
             states[sourceGUID].expirationTimeSpell = expirationTimeSpell
 
-
             -- Check if we need to update the bar duration
             if not states[sourceGUID].expirationTime or (states[sourceGUID].expirationTime and expirationTimeSpell > states[sourceGUID].expirationTime) then
                 states[sourceGUID].duration = aura_env.spellCd
                 states[sourceGUID].expirationTime = expirationTimeSpell
             end
+
+            -- Save to db
+            aura_env.warriors[sourceGUID] = {}
+            aura_env.warriors[sourceGUID].name = sourceName
+            aura_env.warriors[sourceGUID] = states[sourceGUID]
+
+            WeakAurasSaved["displays"][aura_env.id].warriors = aura_env.warriors
         elseif strfind(spellName, " Potion") then
             local expirationTimePot = GetTime() + aura_env.potCd
 
@@ -27,11 +33,14 @@ function(states, event, ...)
                 states[sourceGUID].duration = aura_env.potCd
                 states[sourceGUID].expirationTime = expirationTimePot
             end
-        end
 
-        aura_env.warriors[sourceGUID].name = sourceName
-        aura_env.warriors[sourceGUID] = states[sourceGUID]
-        WeakAurasSaved["displays"][aura_env.id].warriors = aura_env.warriors
+            -- Save to db
+            aura_env.warriors[sourceGUID] = {}
+            aura_env.warriors[sourceGUID].name = sourceName
+            aura_env.warriors[sourceGUID] = states[sourceGUID]
+
+            WeakAurasSaved["displays"][aura_env.id].warriors = aura_env.warriors
+        end
     else
         local warGuids = {}
 
