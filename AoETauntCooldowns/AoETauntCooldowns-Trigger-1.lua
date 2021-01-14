@@ -3,47 +3,49 @@
 function(states, event, ...)
     local timestamp, subevent, _, sourceGUID, sourceName, _, _, destGUID, destName, _, _, spellId_BROKEN_ALWAYS_ZERO, spellName = ...
 
-    if subevent == "SPELL_CAST_SUCCESS" then
-        if spellName == aura_env.spellName then
-            local expirationTimeSpell = GetTime() + aura_env.spellCd
+    if event == "COMBAT_LOG_EVENT_UNFILTERED" then
+        if subevent == "SPELL_CAST_SUCCESS" then
+            if spellName == aura_env.spellName then
+                local expirationTimeSpell = GetTime() + aura_env.spellCd
 
-            states[sourceGUID].changed = true
-            states[sourceGUID].expirationTimeSpell = expirationTimeSpell
+                states[sourceGUID].changed = true
+                states[sourceGUID].expirationTimeSpell = expirationTimeSpell
 
-            -- Check if we need to update the bar duration
-            if not states[sourceGUID].expirationTime or (states[sourceGUID].expirationTime and expirationTimeSpell > states[sourceGUID].expirationTime) then
-                states[sourceGUID].duration = aura_env.spellCd
-                states[sourceGUID].expirationTime = expirationTimeSpell
+                -- Check if we need to update the bar duration
+                if not states[sourceGUID].expirationTime or (states[sourceGUID].expirationTime and expirationTimeSpell > states[sourceGUID].expirationTime) then
+                    states[sourceGUID].duration = aura_env.spellCd
+                    states[sourceGUID].expirationTime = expirationTimeSpell
+                end
+
+                -- Save to db
+                if not aura_env.warriors[sourceGUID] then
+                    aura_env.warriors[sourceGUID] = {}
+                    aura_env.warriors[sourceGUID].name = sourceName
+                end
+                aura_env.warriors[sourceGUID] = states[sourceGUID]
+
+                WeakAurasSaved["displays"][aura_env.id].warriors = aura_env.warriors
+            elseif strfind(spellName, " Potion") then
+                local expirationTimePot = GetTime() + aura_env.potCd
+
+                states[sourceGUID].changed = true
+                states[sourceGUID].expirationTimePot = expirationTimePot
+
+                -- Check if we need to update the bar duration
+                if not states[sourceGUID].expirationTime or (states[sourceGUID].expirationTime and expirationTimePot > states[sourceGUID].expirationTime) then
+                    states[sourceGUID].duration = aura_env.potCd
+                    states[sourceGUID].expirationTime = expirationTimePot
+                end
+
+                -- Save to db
+                if not aura_env.warriors[sourceGUID] then
+                    aura_env.warriors[sourceGUID] = {}
+                    aura_env.warriors[sourceGUID].name = sourceName
+                end
+                aura_env.warriors[sourceGUID] = states[sourceGUID]
+
+                WeakAurasSaved["displays"][aura_env.id].warriors = aura_env.warriors
             end
-
-            -- Save to db
-            if not aura_env.warriors[sourceGUID] then
-                aura_env.warriors[sourceGUID] = {}
-                aura_env.warriors[sourceGUID].name = sourceName
-            end
-            aura_env.warriors[sourceGUID] = states[sourceGUID]
-
-            WeakAurasSaved["displays"][aura_env.id].warriors = aura_env.warriors
-        elseif strfind(spellName, " Potion") then
-            local expirationTimePot = GetTime() + aura_env.potCd
-
-            states[sourceGUID].changed = true
-            states[sourceGUID].expirationTimePot = expirationTimePot
-
-            -- Check if we need to update the bar duration
-            if not states[sourceGUID].expirationTime or (states[sourceGUID].expirationTime and expirationTimePot > states[sourceGUID].expirationTime) then
-                states[sourceGUID].duration = aura_env.potCd
-                states[sourceGUID].expirationTime = expirationTimePot
-            end
-
-            -- Save to db
-            if not aura_env.warriors[sourceGUID] then
-                aura_env.warriors[sourceGUID] = {}
-                aura_env.warriors[sourceGUID].name = sourceName
-            end
-            aura_env.warriors[sourceGUID] = states[sourceGUID]
-
-            WeakAurasSaved["displays"][aura_env.id].warriors = aura_env.warriors
         end
     else
         local warGuids = {}
