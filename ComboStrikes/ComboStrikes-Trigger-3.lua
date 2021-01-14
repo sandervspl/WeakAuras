@@ -3,7 +3,7 @@ function(event, ...)
 
     local timestamp, subevent, _, sourceGUID, sourceName, _, _, destGUID, destName, _, _, spellId, spellName = ...
 
-    if subevent == "SPELL_CAST_SUCCESS" and sourceGUID == UnitGUID("player") then
+    if subevent == "SPELL_CAST_SUCCESS" and sourceGUID == UnitGUID("player") and aura_env.isMonkDamageSpell(spellId) then
         aura_env.prevSpellId = spellId
     end
 
