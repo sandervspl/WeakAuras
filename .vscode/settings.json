@@ -38,6 +38,7 @@
         "GetSpellInfo",
         "WeakAurasSaved",
         "StaticPopupDialogs",
-        "StaticPopup_Show"
+        "StaticPopup_Show",
+        "strfind"
     ]
 }

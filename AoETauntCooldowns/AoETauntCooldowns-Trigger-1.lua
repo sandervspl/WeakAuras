@@ -25,7 +25,7 @@ function(states, event, ...)
                 aura_env.warriors[sourceGUID] = states[sourceGUID]
 
                 WeakAurasSaved["displays"][aura_env.id].warriors = aura_env.warriors
-            elseif strfind(spellName, " Potion") then
+            elseif aura_env.spellIsPot(spellName) then
                 local expirationTimePot = GetTime() + aura_env.potCd
 
                 states[sourceGUID].changed = true
