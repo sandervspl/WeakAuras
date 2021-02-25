@@ -38,4 +38,11 @@ aura_env.spellIsPot = function(spellName)
     return false
 end
 
+aura_env.reset = function()
+    for i,warrior in ipairs(aura_env.warriors) do
+        aura_env.warriors[warrior] = {}
+        WeakAurasSaved["displays"][aura_env.id].warriors[warrior] = {}
+    end
+end
+
 aura_env.warriors = aura_env.warriors or WeakAurasSaved["displays"][aura_env.id].warriors or {}

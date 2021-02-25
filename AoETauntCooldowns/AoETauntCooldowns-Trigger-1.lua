@@ -5,7 +5,7 @@ function(states, event, ...)
 
     if event == "RAID_INSTANCE_WELCOME" then
         -- Reset data
-        WeakAurasSaved["displays"][aura_env.id].warriors = {}
+        aura_env.reset();
     elseif event == "COMBAT_LOG_EVENT_UNFILTERED" then
         if subevent == "SPELL_CAST_SUCCESS" then
             if spellName == aura_env.spellName then
