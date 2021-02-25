@@ -1,9 +1,12 @@
--- COMBAT_LOG_EVENT_UNFILTERED,GROUP_ROSTER_UPDATE,PLAYER_ENTERING_WORLD
+-- COMBAT_LOG_EVENT_UNFILTERED,GROUP_ROSTER_UPDATE,PLAYER_ENTERING_WORLD,RAID_INSTANCE_WELCOME
 
 function(states, event, ...)
     local timestamp, subevent, _, sourceGUID, sourceName, _, _, destGUID, destName, _, _, spellId_BROKEN_ALWAYS_ZERO, spellName = ...
 
-    if event == "COMBAT_LOG_EVENT_UNFILTERED" then
+    if event == "RAID_INSTANCE_WELCOME" then
+        -- Reset data
+        WeakAurasSaved["displays"][aura_env.id].warriors = {}
+    elseif event == "COMBAT_LOG_EVENT_UNFILTERED" then
         if subevent == "SPELL_CAST_SUCCESS" then
             if spellName == aura_env.spellName then
                 local expirationTimeSpell = GetTime() + aura_env.spellCd
