@@ -193,7 +193,7 @@ function(states, event, ...)
                     C_ChatInfo.SendAddonMessage(aura_env.prefix, dataStr, channel)
                 end
             else
-                print("Error: Something wrong with Spell:", spellName, "cooldown:", spell.cooldown)
+                print("Error [spellcd nameplate]: Something wrong with Spell:", spellName, "cooldown:", spell.cooldown)
             end
         end
     end
