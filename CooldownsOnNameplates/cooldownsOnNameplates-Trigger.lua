@@ -186,7 +186,7 @@ function(states, event, ...)
                         channel = "RAID"
                     end
 
-                    if UnitInBattleground("player") > 0 then
+                    if UnitInBattleground("player") and UnitInBattleground("player") > 0 then
                         channel = "INSTANCE_CHAT"
                     end
 

@@ -39,10 +39,12 @@ for i, spell in ipairs(aura_env.config.spells) do
         -- For localization
         local name, _, icon = GetSpellInfo(spell.spellID)
         
-        aura_env.spells[string.lower(name)] = {
-            icon = tonumber(spell.icon) or icon,
-            cooldown = spell.cooldown,
-            active = spell.active,
-        }
+        if (name) then
+            aura_env.spells[string.lower(name)] = {
+                icon = tonumber(spell.icon) or icon,
+                cooldown = spell.cooldown,
+                active = spell.active,
+            }
+        end
     end
 end
