@@ -5,16 +5,12 @@ end
 aura_env.spells = {}
 -- For localization
 aura_env.rogueSpells = {
-    kick = GetSpellName(1769),
+    evasion = GetSpellName(26669),
     sprint = GetSpellName(11305),
-    kidneyShot = GetSpellName(8643),
-    vanish = GetSpellName(1857),
-    blind = GetSpellName(2094),
-    stealth = GetSpellName(1787),
-    gouge = GetSpellName(11286),
-    evasion = GetSpellName(5277),
-    ghostlyStrike = GetSpellName(14278),
-    distract = GetSpellName(1725),
+    vanish = GetSpellName(26889),
+    shadowstep = GetSpellName(36554),
+    coldblood = GetSpellName(14177),
+    premeditation = GetSpellName(14183),
 }
 -- For localization
 aura_env.spellInteractions = {
