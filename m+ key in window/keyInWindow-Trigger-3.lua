@@ -13,7 +13,7 @@ function()
 
     -- If we find no key in bags, but we have recorded data from last week then reset list
     if not found then
-        local guid = UnitGUID("player")
+        local guid = WeakAuras.myGUID
 
         if aura_env.keys[guid] then
             aura_env.reset()

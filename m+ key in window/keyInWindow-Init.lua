@@ -12,7 +12,7 @@ aura_env.update = function(name, lvl)
         name = name,
         lvl = lvl,
     }
-    local guid = UnitGUID("player")
+    local guid = WeakAuras.myGUID
 
     WeakAurasSaved['displays'][aura_env.id].keys[guid] = key
     aura_env.keys = WeakAurasSaved['displays'][aura_env.id].keys
