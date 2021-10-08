@@ -13,8 +13,9 @@ function()
 
     local charKey = aura_env.savedKey()
     local curWeekNum = aura_env.getWeekNum()
+    local d = date("*t")
     if not found and charKey then
-        if charKey.weeknum < curWeekNum or charKey.weeknum > curWeekNum then
+        if d.wday >= 4 and charKey.weeknum < curWeekNum or charKey.weeknum > curWeekNum then
             aura_env.reset()
         end
     end
