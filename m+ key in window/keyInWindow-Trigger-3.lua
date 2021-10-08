@@ -11,11 +11,10 @@ function()
         end
     end
 
-    -- If we find no key in bags, but we have recorded data from last week then reset list
-    if not found then
-        local guid = WeakAuras.myGUID
-
-        if aura_env.keys[guid] then
+    local charKey = aura_env.savedKey()
+    local curWeekNum = aura_env.getWeekNum()
+    if not found and charKey then
+        if charKey.weeknum < curWeekNum or charKey.weeknum > curWeekNum then
             aura_env.reset()
         end
     end
