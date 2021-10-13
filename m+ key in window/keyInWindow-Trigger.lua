@@ -1,7 +1,7 @@
 function(allStates, event, ...)
     local tooltip = {"Your keys\n"}
 
-    for guid, key in pairs(aura_env.keys) do
+    for _, key in pairs(aura_env.getGlobalKeys()) do
         local str = string.format("%s|r\n|c00FFFFFF%s (|c%s%d|r)\n", key.char_name, key.name, aura_env.getKeyColor(key.lvl), key.lvl)
         table.insert(tooltip, str)
     end

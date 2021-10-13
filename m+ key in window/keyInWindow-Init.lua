@@ -1,10 +1,24 @@
 aura_env.keyId = 180653
 
-if not WeakAurasSaved['displays'][aura_env.id].keys then
-    WeakAurasSaved['displays'][aura_env.id].keys = {}
+aura_env.getGlobalKeys = function()
+    return WeakAurasSaved['displays'][aura_env.id].keys
 end
 
-aura_env.keys = aura_env.keys or WeakAurasSaved['displays'][aura_env.id].keys or {}
+aura_env.setGlobalKeys = function(val)
+    WeakAurasSaved['displays'][aura_env.id].keys = val
+end
+
+aura_env.setKey = function(guid, key)
+    aura_env.getGlobalKeys()[guid] = key
+end
+
+aura_env.getPlayerKey = function()
+    return aura_env.getGlobalKeys()[WeakAuras.myGUID]
+end
+
+if not aura_env.getGlobalKeys() then
+    aura_env.setGlobalKeys({})
+end
 
 aura_env.getWeekNum = function()
     local d = date("*t")
@@ -25,13 +39,7 @@ aura_env.update = function(name, lvl)
     }
     local guid = WeakAuras.myGUID
 
-    WeakAurasSaved['displays'][aura_env.id].keys[guid] = key
-    aura_env.keys = WeakAurasSaved['displays'][aura_env.id].keys
-end
-
-aura_env.reset = function()
-    WeakAurasSaved['displays'][aura_env.id].keys = {}
-    aura_env.keys = WeakAurasSaved['displays'][aura_env.id].keys
+    aura_env.setKey(guid, key)
 end
 
 aura_env.getKeyColor = function(lvl)
@@ -48,18 +56,19 @@ aura_env.getKeyColor = function(lvl)
     return levelColors[min(floor(lvl / 5), 6)]
 end
 
-aura_env.savedKey = function()
-    return aura_env.keys[WeakAuras.myGUID]
-end
+aura_env.init = function()
+    if not aura_env.ChallengesFrameHook then
+        -- I think there is a scope issue in the callback function. This fixes it.
+        local aura_env = aura_env
 
-if not aura_env.region.ChallengesFrameHook then
-    local aura_env = aura_env
-    C_Timer.After(1000,
-        function()
+        C_Timer.After(1, function()
             LoadAddOn("Blizzard_ChallengesUI")
+            
             ChallengesFrame:HookScript("OnShow", function() WeakAuras.ScanEvents("CF_SHOW", true) end)
             ChallengesFrame:HookScript("OnHide", function() WeakAuras.ScanEvents("CF_HIDE", true) end)
-            aura_env.region.ChallengesFrameHook = true
-        end
-    )
+            aura_env.ChallengesFrameHook = true
+        end)
+    end
 end
+
+aura_env.init()
