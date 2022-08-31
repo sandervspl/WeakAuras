@@ -115,7 +115,7 @@ function ()
     local arpen = GetArmorPenetration();
     
     if (arpen ~= nil) then
-        output = output .. "ARMOR PEN " .. arpen .. "   "
+        output = output .. "ARMOR PEN " .. string.format("%.2f", arpen) .. "%   "
     end
   end
   
