@@ -9,11 +9,12 @@ function(allStates, event, ...)
     allStates[1] = {}
 
     for bag = 0, NUM_BAG_SLOTS do
-        local bagSlots = GetContainerNumSlots(bag)
+        local bagSlots = C_Container.GetContainerNumSlots(bag)
         for slot = 1, bagSlots do
-            local itemLink, _, _, itemID = select(7, GetContainerItemInfo(bag, slot))
+            local itemID = C_Container.GetContainerItemID(bag, slot)
             
             if itemID == aura_env.keyId then
+                local itemLink = C_Container.GetContainerItemLink(bag, slot)
                 local startIdx = string.find(itemLink, "%: ")
                 local endIdx = string.find(itemLink, " %(")
                 local name = ""

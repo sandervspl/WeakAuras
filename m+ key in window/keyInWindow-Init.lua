@@ -1,11 +1,12 @@
 aura_env.keyId = 180653
+aura_env.keyinwindow = aura_env.keyinwindow or {}
 
 aura_env.getGlobalKeys = function()
-    return WeakAurasSaved['displays'][aura_env.id].keys
+    return aura_env.keyinwindow.keys
 end
 
 aura_env.setGlobalKeys = function(val)
-    WeakAurasSaved['displays'][aura_env.id].keys = val
+    aura_env.keyinwindow.keys = val
 end
 
 aura_env.setKey = function(guid, key)
@@ -62,7 +63,7 @@ aura_env.init = function()
         local aura_env = aura_env
 
         C_Timer.After(1, function()
-            LoadAddOn("Blizzard_ChallengesUI")
+            C_AddOns.LoadAddOn("Blizzard_ChallengesUI")
             
             ChallengesFrame:HookScript("OnShow", function() WeakAuras.ScanEvents("CF_SHOW", true) end)
             ChallengesFrame:HookScript("OnHide", function() WeakAuras.ScanEvents("CF_HIDE", true) end)
